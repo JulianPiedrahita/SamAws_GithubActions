@@ -16,5 +16,5 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_REGION }}
       - run: sam build --use-container
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name ${{ secrets.DEV_STACK_NAME }} --region ${{ secrets.REGION }}
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --region ${{ secrets.REGION }}
   
