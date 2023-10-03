@@ -1,29 +1,21 @@
-name: AWS OIDC Connect Demo
+name: "Deploy-dev"
 on:
-  push
-env:
-  AWS_REGION : "us-east-1"    
-permissions:
-      id-token: write   # This is required for requesting the JWT
-      contents: read    # This is required for actions/checkout
+  push:
+    branches: ["main"]
 jobs:
-  DemoOIDC:
+  build-deploy-dev:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/devops'
     steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - uses: aws-actions/setup-sam@v1
+      - uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::112542310873:role/github-oidc-role
-          role-session-name: samplerolesession
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Print AWS SSM Parameter
-        run: aws ssm get-parameter --name=hello_aws-gh-oidc --query Parameter.Value
-
-      - name: Print assumed role
-        run: aws sts get-caller-identity        
-
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN_DEV }}
+          aws-region: ${{ secrets.REGION }}
+      - run: sam build --use-container
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name ${{ secrets.DEV_STACK_NAME }} --region ${{ secrets.REGION }}
   
