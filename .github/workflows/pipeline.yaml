@@ -16,10 +16,5 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_REGION }}
       - run: sam build --use-container
-      - run: sam deploy --stack-name $(echo ${GITHUB_REF##*/} | tr -cd '[a-zA-Z0-9-]') \
-            --capabilities CAPABILITY_IAM \
-            --region ${secrets.AWS_REGION} \
-            --s3-bucket ${DEV_ARTIFACTS_BUCKET} \
-            --no-fail-on-empty-changeset \
-            --role-arn ${AWS_ROL}
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
   
