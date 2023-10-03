@@ -36,6 +36,23 @@ permissions:
   id-token: write
   contents: read
 jobs:
+  OIDC:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::1125-4231-0873:role/github-oidc-role
+          role-session-name: samplerolesession
+
+      - name: Print AWS SSM Parameter
+        run: aws ssm get-parameter --name=hello_aws-gh-oidc --query Parameter.Value
+
+      - name: Print assumed role
+        run: aws sts get-caller-identity
   test:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
