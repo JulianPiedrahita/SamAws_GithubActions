@@ -16,5 +16,10 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_REGION }}
       - run: sam build --use-container
-      - run: sam deploy --template-file "$1"template.yml --config-file "$1"samconfig.toml --profile "$profile" --no-disable-rollback --parameter-overrides StageName="$environ" DomainName="$domainName"
+      - run: sam deploy --stack-name $(echo ${GITHUB_REF##*/} | tr -cd '[a-zA-Z0-9-]') \
+            --capabilities CAPABILITY_IAM \
+            --region ${secrets.AWS_REGION} \
+            --s3-bucket ${DEV_ARTIFACTS_BUCKET} \
+            --no-fail-on-empty-changeset \
+            --role-arn ${AWS_ROL}
   
