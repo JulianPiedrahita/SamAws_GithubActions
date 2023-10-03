@@ -5,6 +5,8 @@ on:
     branches:
       - 'main'
       - 'feature**'
+env:
+  AWS_REGION : "eu-west-1"     
   delete:
     branches:
       - 'feature**'
@@ -47,6 +49,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::112542310873:role/github-oidc-role
           role-session-name: samplerolesession
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Print AWS SSM Parameter
         run: aws ssm get-parameter --name=hello_aws-gh-oidc --query Parameter.Value
