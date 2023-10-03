@@ -16,5 +16,5 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_REGION }}
       - run: sam build --use-container
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --region ${{ secrets.REGION }}
+      - run: sam deploy --template-file "$1"template.yml --config-file "$1"samconfig.toml --profile "$profile" --no-disable-rollback --parameter-overrides StageName="$environ" DomainName="$domainName"
   
