@@ -5,7 +5,6 @@ on:
 jobs:
   build-deploy-dev:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/devops'
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
