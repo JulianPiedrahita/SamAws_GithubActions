@@ -12,9 +12,21 @@ permissions:
   id-token: write
   contents: read
 jobs:
-  OIDC:
+  Credentials:
     runs-on: ubuntu-latest
     steps:
+      
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Connect to AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          token: ${{ secrets.TOKEN_GITHUB }}
+          aws-region: ${{ secrets.REGION }}
+
       - name: Git clone the repository
         uses: actions/checkout@v3
 
