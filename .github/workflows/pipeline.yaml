@@ -22,13 +22,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           token: ${{ secrets.TOKEN_GITHUB }}
           aws-region: ${{ secrets.AWS_REGION }}
-          role-to-assume: arn:aws:iam::112542310873:role/github-oidc-role
-          role-session-name: samplerolesession
+          role-to-assume: ${{ secrets.AWS_ROL}}
+
 
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::112542310873:role/github-oidc-role
+          role-to-assume: ${{ secrets.AWS_ROL}}
           role-session-name: samplerolesession
           aws-region: ${{ env.AWS_REGION }}
 
