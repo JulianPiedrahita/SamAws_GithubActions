@@ -12,7 +12,7 @@ on:
 env:
   PIPELINE_USER_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   PIPELINE_USER_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_REGION: ${{ secrets.env.AWS_REGION }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
   SAM_TEMPLATE: template.yaml
   TESTING_STACK_NAME: sam-app-dev
   TESTING_PIPELINE_EXECUTION_ROLE: arn:aws:iam::112542310873:role/aws-sam-cli-managed-dev-pipe-PipelineExecutionRole-1WHQNV8LZZ6NX
