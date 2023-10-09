@@ -7,14 +7,14 @@ jobs:
   unit-test-dev:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    name: unit_test_dev
     steps:
       - uses: actions/checkout@v2
       - run: |
-          trigger the tests here
+          # trigger the tests here
           echo 'Running unit tests'
           pip3 install pytest pytest-mock
           python3 -m pytest tests/unit
+
   depcheck-test:
     runs-on: ubuntu-latest
     name: depecheck_test_dev
