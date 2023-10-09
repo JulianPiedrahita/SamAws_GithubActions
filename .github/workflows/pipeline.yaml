@@ -7,21 +7,22 @@ jobs:
   unit-test-dev:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    name: unit_test_dev
     steps:
       - uses: actions/checkout@v2
       - run: |
-          # trigger the tests here
+          trigger the tests here
           echo 'Running unit tests'
           pip3 install pytest pytest-mock
           python3 -m pytest tests/unit
-  depchecktest:
+  depcheck-test:
     runs-on: ubuntu-latest
-    name: depecheck_test
+    name: depecheck_test_dev
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build project with Maven
-        run: mvn clean install
+        run:  mvn clean --file *.pom install
       - name: Depcheck
         uses: dependency-check/Dependency-Check_Action@main
         id: Depcheck
