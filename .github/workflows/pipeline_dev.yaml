@@ -4,58 +4,36 @@ on:
     branches: ["main"]
 jobs:
 
-  unit-test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.8"]
+
+  build-create-s3-dev:
+    runs-on: ubuntu-lastest
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Python # Set Python version
-        uses: actions/setup-python@v4
+      - name: Checking out code
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          python-version: ${{ matrix.python-version }}
-      # Install pip and pytest
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-      - name: Test with pytest
-        run: |
-          cd tests/unit
-          pytest test_handler.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
-      - name: Upload pytest test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: pytest-results-${{ matrix.python-version }}
-          path: junit/test-results-${{ matrix.python-version }}.xml
-        # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}
-        
-  depcheck-test:
-    runs-on: ubuntu-latest
-    name: depecheck_test_dev
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build project with Maven
-        run:  mvn clean --file *.pom install
-      - name: Depcheck
-        uses: dependency-check/Dependency-Check_Action@main
-        id: Depcheck
-        with:
-          project: 'test'
-          path: '.'
-          format: 'HTML'
-          out: 'reports' # this is the default, no need to specify unless you wish to override it
-          args: >
-            --failOnCVSS 7
-            --enableRetired
-      - name: Upload Test results
-        uses: actions/upload-artifact@master
-        with:
-           name: Depcheck report
-           path: ${{github.workspace}}/reports
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Create S3 bucket
+        run:  |
+          if aws s3api ${{ vars.BUCKET_NAME_DEV }} | grep -w ${{ vars.BUCKET_NAME_DEV }} >/dev/null; then
+            echo "El bucket ${{ vars.BUCKET_NAME_DEV }} ya existe."
+          else
+            aws s3api create-bucket --bucket ${{ vars.BUCKET_NAME_DEV }} --region ${{ vars.AWS_REGION }}
+              echo "El bucket ${{ vars.BUCKET_NAME_DEV }} ha sido creado."
+            aws s3api put-public-access-block --bucket ${{ vars.BUCKET_NAME_DEV }} --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"    
+              echo " se aplica la seguridad privada al ${{ vars.BUCKET_NAME_DEV }}"
+            aws s3api put-bucket-logging --bucket ${{ vars.BUCKET_NAME_DEV }} --bucket-logging-status file://bucket-logging.json
+              echo "El access server logging para ${{ vars.BUCKET_NAME_DEV }} ha sido configurado."
+            aws s3api put-bucket-versioning --bucket ${{ vars.BUCKET_NAME_DEV }} --versioning-configuration Status=Enabled
+              echo "El versionamiento para ${{ vars.BUCKET_NAME_DEV }} ha sido habilitado."
+            #eliminacion de politica 
+            aws s3api delete-bucket-policy --bucket ${{ vars.BUCKET_NAME_DEV }}
+          fi
+          
   build-deploy-dev:
     runs-on: ubuntu-latest
     steps:
