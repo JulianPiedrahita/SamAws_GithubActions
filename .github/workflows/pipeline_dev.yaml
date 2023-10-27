@@ -18,21 +18,8 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Create S3 bucket
-        run:  |
-          if aws s3api ${{ vars.BUCKET_NAME_DEV }} | grep -w ${{ vars.BUCKET_NAME_DEV }} >/dev/null; then
-            echo "El bucket ${{ vars.BUCKET_NAME_DEV }} ya existe."
-          else
-            aws s3api create-bucket --bucket ${{ vars.BUCKET_NAME_DEV }} --region ${{ vars.AWS_REGION }}
-              echo "El bucket ${{ vars.BUCKET_NAME_DEV }} ha sido creado."
-            aws s3api put-public-access-block --bucket ${{ vars.BUCKET_NAME_DEV }} --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"    
-              echo " se aplica la seguridad privada al ${{ vars.BUCKET_NAME_DEV }}"
-            aws s3api put-bucket-logging --bucket ${{ vars.BUCKET_NAME_DEV }} --bucket-logging-status file://bucket-logging.json
-              echo "El access server logging para ${{ vars.BUCKET_NAME_DEV }} ha sido configurado."
-            aws s3api put-bucket-versioning --bucket ${{ vars.BUCKET_NAME_DEV }} --versioning-configuration Status=Enabled
-              echo "El versionamiento para ${{ vars.BUCKET_NAME_DEV }} ha sido habilitado."
-            #eliminacion de politica 
-            aws s3api delete-bucket-policy --bucket ${{ vars.BUCKET_NAME_DEV }}
-          fi
+        run:  aws s3api create-bucket --bucket ${{ vars.BUCKET_NAME_DEV }} --region ${{ secrets.AWS_REGION }}
+
           
   build-deploy-dev:
     needs: [build-create-s3-dev]
