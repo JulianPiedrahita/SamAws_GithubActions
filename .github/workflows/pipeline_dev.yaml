@@ -35,6 +35,7 @@ jobs:
           fi
           
   build-deploy-dev:
+    needs: [build-create-s3-dev]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
