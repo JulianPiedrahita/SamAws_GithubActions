@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-lastest
     steps:
       - name: Checking out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -19,8 +19,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Create S3 bucket
         run:  aws s3api create-bucket --bucket ${{ vars.BUCKET_NAME_DEV }} --region ${{ secrets.AWS_REGION }}
-
-          
+           
   build-deploy-dev:
     needs: [build-create-s3-dev]
     runs-on: ubuntu-latest
