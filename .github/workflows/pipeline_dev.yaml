@@ -6,8 +6,6 @@ jobs:
 
   build-apigateway-release:
     runs-on: ubuntu-latest
-    environment: CcbLambdaPostAuthenticateFacial
-    if: github.ref == 'refs/heads/Release'
     steps:
       - uses: actions/checkout@v2
       - name: Connect to AWS
