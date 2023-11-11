@@ -4,8 +4,39 @@ on:
     branches: ["main"]
 jobs:
 
+  build-apigateway-release:
+    runs-on: ubuntu-latest
+    environment: CcbLambdaPostAuthenticateFacial
+    if: github.ref == 'refs/heads/Release'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Connect to AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: build and update apigatway    
+        run: |
+          sudo apt install jq* -y > /dev/null 2>&1
+          if [[ aws apigateway get-rest-api  --rest-api-id ${{ secrets.API_GATEWAY_ID_RELEASE }}  >/dev/null 2>&1 ]]; then
+              echo "${{ secrets.API_GATEWAY_ID_RELEASE }}<"
+              echo "la api ya existe"
+            aws apigateway put-rest-api --rest-api-id ${{ secrets.API_GATEWAY_ID_RELEASE }} --mode merge --body ${{ vars.DATA_RELEASE }} 
+              echo "update api"
+            aws apigateway update-stage --rest-api-id ${{ secrets.API_GATEWAY_ID_RELEASE }} --stage-name ${{ vars.STAGE_NAME_RELEASE }} \
+              --patch-operations 'op=replace,path=///metrics/enabled,value=true'
+            aws apigateway update-stage --rest-api-id ${{ secrets.API_GATEWAY_ID_RELEASE }} --stage-name ${{ vars.STAGE_NAME_RELEASE }} \ 
+              --patch-operations 'op=replace,path=/endpointConfiguration/types/${{ vars.API_TYPE_RELEASE }},value='REGIONAL''
+              echo "update api logs"
+          else
+              aws apigateway create-rest-api --name ${{ vars.API_NAME_RELEASE }} \
+                --description "CCB AWS Authenticate Facial API"        
+          fi
 
   build-create-s3-dev:
+    needs: [build-apigateway-release]
     runs-on: ubuntu-lastest
     steps:
       - uses: actions/checkout@v2
