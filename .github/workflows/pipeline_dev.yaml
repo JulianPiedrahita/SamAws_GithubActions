@@ -30,7 +30,7 @@ jobs:
               echo "update api logs"
           else
               aws apigateway create-rest-api --name ${{ vars.API_NAME_RELEASE }} \
-                --description "CCB AWS Authenticate Facial API"        
+                --description "CCB AWS Authenticate Facial API..."        
           fi
 
   build-create-s3-dev:
