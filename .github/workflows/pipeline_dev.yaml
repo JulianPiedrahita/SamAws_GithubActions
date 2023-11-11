@@ -18,7 +18,7 @@ jobs:
       - name: build and update apigatway    
         run: |
           sudo apt install jq* -y > /dev/null 2>&1
-          if [[ aws apigateway get-rest-api  --rest-api-id ${{ secrets.API_GATEWAY_ID_RELEASE }}  >/dev/null 2>&1 ]]; then
+          if aws apigateway get-rest-api  --rest-api-id ${{ secrets.API_GATEWAY_ID_RELEASE }}  >/dev/null 2>&1 ; then
               echo "${{ secrets.API_GATEWAY_ID_RELEASE }}<"
               echo "la api ya existe"
             aws apigateway put-rest-api --rest-api-id ${{ secrets.API_GATEWAY_ID_RELEASE }} --mode merge --body ${{ vars.DATA_RELEASE }} 
