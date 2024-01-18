@@ -49,6 +49,20 @@ jobs:
       - name: Test with pytest
         run: pytest test/tests.py 
 
+  build-sonarqube:
+      name: sonarqube
+      runs-on: ubuntu-latest
+
+      permissions:
+        id-token: write
+        contents: write
+      steps:   
+        - uses: SonarSource/gh-action_release/.github/workflows/main.yaml@v5
+          with:
+            publishToBinaries: true
+            mavenCentralSync: true
+            slackChannel: team-lang-phpy-notifs      
+
   build-jmeter:
     name: Run jmeter
     runs-on: ubuntu-latest
