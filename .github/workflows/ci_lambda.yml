@@ -52,20 +52,14 @@ jobs:
   sam-validate-build:
     needs: [build-test-pytest]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"]
 
     steps:
 
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Install Dependencies with Apt Get
-        run: |
-          sudo apt-get update
-          sudo apt-get install python3.8 jq -y
-
-      - name: Install Pip Dependencies
-        run: |
-          pip3 install pytest
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
