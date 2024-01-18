@@ -85,7 +85,6 @@ jobs:
           path: other_reports/        
 
   sam-validate-build:
-    needs: [sonarqube]
     runs-on: ubuntu-latest
     strategy:
       matrix:
