@@ -31,9 +31,9 @@ jobs:
         
       - name: Directory
         run: pwd
-          
+
       - name: Test with pytest
-        run: pytest tests.py    
+        run: pytest test/tests.py    
 
       - name: Run pytest
         uses: pavelzw/pytest-action@v2
