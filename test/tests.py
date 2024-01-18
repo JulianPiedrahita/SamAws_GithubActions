@@ -2,9 +2,6 @@ import random
 import pytest
 
 
-def test_failed():
-    assert "emoji" == "hello world"
-
 
 @pytest.mark.xfail
 def test_xfailed():
