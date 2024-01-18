@@ -2,7 +2,7 @@ name: CD - lambda-sam
 
 on:
     workflow_run:
-      workflows: ["test-pytest"]
+      workflows: [ci_lambda.yml]
       types: [requested]
       branches:
         - main
