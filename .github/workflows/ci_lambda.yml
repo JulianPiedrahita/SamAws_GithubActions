@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  build-scan-trivy-repo:
+  scan-trivy-repo:
       name: Run trivy
       runs-on: ubuntu-latest
 
@@ -22,9 +22,9 @@ jobs:
             scan-ref: '.'
             trivy-config: trivy.yaml        
 
-  build-test-pytest:
+  test-pytest:
     name: Run pytests
-    needs: [build-scan-trivy-repo]
+    needs: [scan-trivy-repo]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -49,9 +49,9 @@ jobs:
       - name: Test with pytest
         run: pytest test/tests.py 
 
-  build-sonarqube:
+  sonarqube:
     name: Run sonarqube
-    needs: [build-test-pytest]
+    needs: [test-pytest]
     runs-on: ubuntu-latest
 
     permissions:
@@ -65,8 +65,9 @@ jobs:
           mavenCentralSync: true
           slackChannel: team-lang-phpy-notifs      
 
-  build-jmeter:
+  jmeter:
     name: Run jmeter
+    needs: [sonarqube]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -96,7 +97,7 @@ jobs:
           path: other_reports/        
 
   sam-validate-build:
-    needs: [build-test-pytest]
+    needs: [sonarqube]
     runs-on: ubuntu-latest
     strategy:
       matrix:
