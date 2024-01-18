@@ -54,4 +54,5 @@ jobs:
         run: pytest test/tests.py 
 
   call-workflow-cd-lambda-repo:
-          uses: ./.github/workflows/cd_lambda.yml
+    needs: [test-pytest]
+    uses: ./.github/workflows/cd_lambda.yml
