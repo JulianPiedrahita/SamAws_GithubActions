@@ -19,13 +19,7 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Install dependence   
-        run: pip install pytest pytest-md pytest-emoji pytest-cov  
-
-      - uses: pavelzw/pytest-action@v2
-        with:
-          emoji: true
-          verbose: false
-          job-summary: true  
+        run: pip install pytest pytest-md pytest-emoji pytest-cov   
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
