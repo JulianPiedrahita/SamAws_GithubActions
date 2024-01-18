@@ -3,7 +3,6 @@ name: CD - lambda-sam
 on:
     workflow_run:
       workflows: [CI - lambda-sam]
-      types: [requested]
       branches:
         - main
 
