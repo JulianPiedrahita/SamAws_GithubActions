@@ -23,7 +23,7 @@ jobs:
             trivy-config: trivy.yaml        
 
   build-test-pytest:
-    name: Run tests
+    name: Run pytests
     needs: [build-scan-trivy-repo]
     runs-on: ubuntu-latest
     strategy:
@@ -50,18 +50,20 @@ jobs:
         run: pytest test/tests.py 
 
   build-sonarqube:
-      name: sonarqube
-      runs-on: ubuntu-latest
+    name: Run sonarqube
+    needs: [build-test-pytest]
+    runs-on: ubuntu-latest
 
-      permissions:
-        id-token: write
-        contents: write
-      steps:   
-        - uses: SonarSource/gh-action_release/.github/workflows/main.yaml@v5
-          with:
-            publishToBinaries: true
-            mavenCentralSync: true
-            slackChannel: team-lang-phpy-notifs      
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:   
+      - uses: SonarSource/gh-action_release/.github/workflows/main.yaml@v5
+        with:
+          publishToBinaries: true
+          mavenCentralSync: true
+          slackChannel: team-lang-phpy-notifs      
 
   build-jmeter:
     name: Run jmeter
