@@ -63,6 +63,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
 
   jmeter:
     name: Run jmeter
@@ -98,7 +100,7 @@ jobs:
           path: other_reports/        
 
   sam-validate-build:
-    needs: [sonarqube]
+    needs: [jmeter]
     runs-on: ubuntu-latest
     strategy:
       matrix:
