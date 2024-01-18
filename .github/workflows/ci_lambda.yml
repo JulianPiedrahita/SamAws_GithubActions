@@ -4,6 +4,10 @@ on:
   push:
     branches: ["main"]
 
+permissions:
+  id-token: write
+  contents: write    
+
 jobs:
 
   scan-trivy-repo:
@@ -54,10 +58,6 @@ jobs:
     needs: [test-pytest]
     runs-on: ubuntu-latest
 
-    permissions:
-      id-token: write
-      contents: write
-
     steps:   
       - uses: SonarSource/gh-action_release/.github/workflows/main.yaml@v5
         with:
@@ -70,9 +70,7 @@ jobs:
     needs: [sonarqube]
     runs-on: ubuntu-latest
     steps:
-      
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v2
 
       - name: Run JMeter Action on a test
         uses: rbhadti94/apache-jmeter-action@v0.5.0
@@ -99,7 +97,7 @@ jobs:
           path: other_reports/        
 
   sam-validate-build:
-    needs: [jmeter]
+    needs: [sonarqube]
     runs-on: ubuntu-latest
     strategy:
       matrix:
