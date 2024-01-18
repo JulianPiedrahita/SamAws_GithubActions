@@ -20,6 +20,12 @@ jobs:
 
       - name: Install dependence   
         run: pip install pytest pytest-md pytest-emoji pytest-cov  
+        
+      - uses: pavelzw/pytest-action@v2
+        with:
+          emoji: false
+          verbose: false
+          job-summary: true  
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
