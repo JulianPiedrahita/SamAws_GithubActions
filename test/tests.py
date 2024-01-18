@@ -1,9 +1,4 @@
-import random
 import pytest
-
-
-
-
 
 @pytest.mark.parametrize(
     "name, expected",
