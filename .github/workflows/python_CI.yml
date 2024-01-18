@@ -3,7 +3,7 @@ name: Run Python tests
 on:
   push:
     branches: ["main"]
-    
+
 jobs:
 
   build-scan-trivy-repo:
@@ -57,4 +57,5 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Test with pytest
-        run: pytest test/tests.py   
+        run: pytest test/tests.py  
+         
