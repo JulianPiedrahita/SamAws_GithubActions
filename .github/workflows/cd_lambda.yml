@@ -2,10 +2,10 @@ name: CD - lambda-sam
 
 on:
     workflow_run:
-      workflows: ["CI - lambda-sam"]
+      workflows: ["test-pytest"]
       types: [requested]
       branches:
-        - 'main/**'
+        - main
 
 permissions:
   id-token: write
