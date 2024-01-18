@@ -53,6 +53,23 @@ jobs:
       - name: Test with pytest
         run: pytest test/tests.py 
 
-  call-workflow-cd-lambda-repo:
+  sonarqube:
+    name: Run sonarqube
     needs: [test-pytest]
-    uses: ./.github/workflows/cd_lambda.yml
+    runs-on: ubuntu-latest
+
+    
+
+  call-workflow-cd-lambda-repo:
+    name: Run call cd
+    needs: [test-pytest]
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Call workflow CD
+        uses: ./.github/workflows/cd_lambda.yml
+  
