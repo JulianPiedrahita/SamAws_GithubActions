@@ -3,9 +3,7 @@ name: Run Python tests
 on:
   push:
     branches: ["main"]
-
-   
-
+    
 jobs:
 
   build-scan-trivy-repo:
