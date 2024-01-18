@@ -26,6 +26,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Change directiry
+        run: cd test
+        
+      - name: Directory
+        run: pwd
+          
       - name: Test with pytest
         run: pytest tests.py    
 
