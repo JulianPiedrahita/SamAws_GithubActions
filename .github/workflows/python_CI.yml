@@ -28,7 +28,3 @@ jobs:
 
       - name: Test with pytest
         run: pytest test/tests.py   
-        
-      - name: test emoji
-        run: pytest --emoji -v --md report.md  
-
