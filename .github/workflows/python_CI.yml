@@ -20,10 +20,10 @@ jobs:
 
       - name: Install dependence   
         run: pip install pytest pytest-md pytest-emoji pytest-cov  
-        
+
       - uses: pavelzw/pytest-action@v2
         with:
-          emoji: false
+          emoji: true
           verbose: false
           job-summary: true  
 
