@@ -49,23 +49,40 @@ jobs:
       - name: Test with pytest
         run: pytest test/tests.py 
 
-  sonarqube:
-    name: Run sonarqube
-    needs: [test-pytest]
+    
+
+  jmeter:
+    name: Run jmeter
+    
     runs-on: ubuntu-latest
+    steps:
+      
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    permissions:
-      id-token: write
-      contents: write
-
-    steps:   
-      - uses: SonarSource/gh-action_release/.github/workflows/main.yaml@v5
+      - name: Run JMeter Action on a test
+        uses: rbhadti94/apache-jmeter-action@v0.5.0
         with:
-          publishToBinaries: true
-          mavenCentralSync: true
-          slackChannel: team-lang-phpy-notifs      
+          testFilePath: tests/sample_test.jmx
+          outputReportsFolder: reports/
+          args: "--loglevel INFO"
 
-       
+      - name: Run JMeter Action on other tests
+        uses: rbhadti94/apache-jmeter-action@v0.5.0
+        with:
+          testFilePath: other-tests/
+          outputReportsFolder: other_reports/
+          args: "--loglevel INFO"
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: jmeter-test-results
+          path: reports/
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: jmeter-test-results-other
+          path: other_reports/        
 
   sam-validate-build:
     needs: [sonarqube]
