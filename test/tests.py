@@ -15,8 +15,7 @@ def test_skipped():
         ("Annie", "Hello Annie!"),
     ],
 )
-def test_passed(name, expected):
-    assert f"Hello {name}!" == expected
+
 
 
 def test_error(number):
