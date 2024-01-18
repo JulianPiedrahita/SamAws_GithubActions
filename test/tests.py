@@ -18,18 +18,6 @@ def test_skipped():
     assert "pytest-emoji" != ""
 
 
-@pytest.mark.parametrize(
-    "name, expected",
-    [
-        ("Sara", "Hello Sara!"),
-        ("Mat", "Hello Mat!"),
-        ("Annie", "Hello Annie!"),
-    ],
-)
-def test_passed(name, expected):
-    assert f"Hello {name}!" == expected
-
-
 @pytest.fixture
 def number():
     return 1234 / 0
