@@ -110,4 +110,3 @@ jobs:
   call-workflow-cd-lambda:
     needs: [jmeter]
     uses: ./.github/workflows/cd_lambda.yml
-  
