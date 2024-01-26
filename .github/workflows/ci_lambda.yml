@@ -58,6 +58,12 @@ jobs:
     needs: [test-pytest]
     runs-on: ubuntu-latest
     steps:
+      - name: install sonar scanner
+        run: |
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
+          unzip sonar-scanner-cli-4.8.0.2856-linux.zip
+          sudo mv sonar-scanner-cli-4.8.0.2856-linux.zip /opt/sonar-scanner
+
       - name: Configure sonar scanner
         uses: philips-software/sonar-scanner-action@v1.5.1
         id: sonarconfig
@@ -81,7 +87,8 @@ jobs:
           args: >
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.tests=tests/
-            -Dsonar.verbose=true    
+            -Dsonar.verbose=true 
+
     
       - run: SonarScanner -X    
       - uses: actions/checkout@v2
