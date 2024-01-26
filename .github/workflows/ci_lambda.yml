@@ -71,7 +71,7 @@ jobs:
         uses: warchant/setup-sonar-scanner@v7
       # Run sonar-scanner
       - name: SonarQube Scan
-        run: sonar-scanner
+        run: sonar-scanner -X
            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       - uses: actions/checkout@v2
