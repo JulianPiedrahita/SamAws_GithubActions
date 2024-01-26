@@ -59,18 +59,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
-      - uses: actions/checkout@v3
+      - uses: mathrix-education/sonar-scanner@master
         with:
-          fetch-depth: 0  
-          
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env: 
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - run: sonar-scanner -X 
-        env: 
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            version: 3.8 # required
+            python: true
+            scan: true
+            args: --debug -Dsonar.login=${{ secrets.SONAR_TOKEN }}
            
 
   jmeter:
