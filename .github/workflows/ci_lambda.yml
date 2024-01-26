@@ -58,9 +58,13 @@ jobs:
     needs: [test-pytest]
     runs-on: ubuntu-latest
     steps:
+    
+      - run: sonar-scanner -X
+      
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  
+          
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env: 
