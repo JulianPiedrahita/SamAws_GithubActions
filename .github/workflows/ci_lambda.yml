@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure sonar scanner
-        uses: philips-software/sonar-scanner-action@<version>
+        uses: philips-software/sonar-scanner-action@2
         id: sonarconfig
         with:
           token: ${{ secrets.SONARQUBE_TOKEN }}
