@@ -78,6 +78,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          
+      - run: SonarScanner -X   
 
       - uses: sonarsource/sonarqube-quality-gate-action@master
         timeout-minutes: 1
