@@ -62,6 +62,7 @@ jobs:
         uses: philips-software/sonar-scanner-action@v1.5.1
         id: sonarconfig
         with:
+          github_token: ${{ secrets.TOKEN_GITHUB }}
           token: ${{ secrets.SONARQUBE_TOKEN }}
           projectName: test_sonar_python
           projectKey: ?id=test_sonar_python&selectedTutorial=github-actions
