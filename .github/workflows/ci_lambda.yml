@@ -58,20 +58,13 @@ jobs:
     needs: [test-pytest]
     runs-on: ubuntu-latest
     steps:
-    - name: Run sonar-scanner
-      uses: LowCostCustoms/sonar-scanner-action@v0.0.1
-      with:
-        image: sonarsource/sonar-scanner-cli:4.4
-        wait-for-quality-gate: 'true'
-        quality-gate-wait-timeout: 2m
-        sonar-host-url: http://127.0.0.1:9000
-        sonar-host-cert: ${{ secrets.sonar-host-public-cert }}
-        project-file-location: sonar-project.properties
-        sources-mount-point: '/app'
-        log-level: 'info'
-        tls-skip-verify: 'false'
-        sonar-login: ${{ secrets.LOGIN_SONAR }}
-        sonar-password: ${{ secrets.PASSWORD_SONAR }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
            
 
   jmeter:
