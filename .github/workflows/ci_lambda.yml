@@ -58,8 +58,6 @@ jobs:
     needs: [test-pytest]
     runs-on: ubuntu-latest
     steps:
-    
-      - run: sonar-scanner -X
       
       - uses: actions/checkout@v3
         with:
@@ -67,6 +65,10 @@ jobs:
           
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - run: sonar-scanner -X 
         env: 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
            
