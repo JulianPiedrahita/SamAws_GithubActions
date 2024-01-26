@@ -69,6 +69,11 @@ jobs:
           projectName: test_sonar_python
           projectKey: ?id=test_sonar_python&selectedTutorial
           url: http://127.0.0.1:9000
+          projectBaseDir: app/src
+          args: >
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.tests=tests/
+            -Dsonar.verbose=true 
           isCommunityEdition: true
           enablePullRequestDecoration: true
           onlyConfig: true
