@@ -63,7 +63,7 @@ jobs:
         id: sonarconfig
         with:
           github_token: ${{ secrets.TOKEN_GITHUB }}
-          token: ${{ secrets.SONARQUBE_TOKEN }}
+          sonar_token: ${{ secrets.SONAR_TOKEN }}
           projectName: test_sonar_python
           projectKey: ?id=test_sonar_python&selectedTutorial=github-actions
           url: http://127.0.0.1:9000
