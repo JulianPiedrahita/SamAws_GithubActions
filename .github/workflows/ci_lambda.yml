@@ -59,13 +59,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure sonar scanner
-        uses: philips-software/sonar-scanner-action@1.5.1
+        uses: philips-software/sonar-scanner-action@v1.5.1
         id: sonarconfig
         with:
           token: ${{ secrets.SONARQUBE_TOKEN }}
           projectName: test_sonar_python
           projectKey: ?id=test_sonar_python&selectedTutorial=github-actions
           url: http://127.0.0.1:9000
+          isCommunityEdition: true
           enablePullRequestDecoration: true
           onlyConfig: true
       - name: Run sonar scanner
@@ -74,8 +75,7 @@ jobs:
           entrypoint: bash
           args:
             -c "./gradlew --info sonarQube ${{ steps.sonarconfig.outputs.sonarParameters }}"
-           
-
+            
   jmeter:
     name: Run jmeter
     needs: [sonarqube]
