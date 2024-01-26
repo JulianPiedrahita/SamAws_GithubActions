@@ -70,12 +70,6 @@ jobs:
           isCommunityEdition: true
           enablePullRequestDecoration: true
           onlyConfig: true
-      - name: Run sonar scanner
-        uses: docker://openjdk:11.0.6-jdk-slim
-        with:
-          entrypoint: bash
-          args:
-            -c "./gradlew --info sonarQube ${{ steps.sonarconfig.outputs.sonarParameters }}"
             
   jmeter:
     name: Run jmeter
