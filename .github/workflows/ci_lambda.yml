@@ -72,11 +72,9 @@ jobs:
       # Run sonar-scanner
       - name: SonarQube Scan
         run: sonar-scanner -X
-           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
       - uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
