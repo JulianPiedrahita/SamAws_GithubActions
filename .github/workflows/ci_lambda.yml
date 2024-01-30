@@ -73,7 +73,7 @@ jobs:
       # Run sonar-scanner -X
       - name: SonarQube Scan
         run: sonar-scanner -X
-           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+           -Dsonar.host.url=http://127.0.0.1:9000
            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
            
