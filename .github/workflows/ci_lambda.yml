@@ -75,7 +75,7 @@ jobs:
 
   sonarqube:
     name: Run sonarscanner
-    needs: [build-sonar]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
     
