@@ -67,7 +67,7 @@ jobs:
           token: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           projectName: test_sonar_python
-          projectKey: ?id=test_sonar_python&selectedTutorial
+          projectKey: SamAws_test
           url: http://127.0.0.1:9000
           BaseDir: app/src
           args: >
