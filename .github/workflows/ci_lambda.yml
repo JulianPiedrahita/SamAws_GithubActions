@@ -53,8 +53,8 @@ jobs:
       - name: Test with pytest
         run: pytest test/tests.py 
 
-  build:
-    name: Build
+  test-sonar:
+    name: Build sonar
     needs: [test-pytest]
     runs-on: ubuntu-latest
     permissions: read-all
@@ -62,60 +62,31 @@ jobs:
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
-      # Setup java 17 to be default (sonar-scanner requirement as of 5.x)
       - uses: actions/setup-java@v3
         with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
+          distribution: 'temurin' 
           java-version: '17'
-      # Setup sonar-scanner
       - name: Setup SonarQube
         uses: warchant/setup-sonar-scanner@v7
-      # Run sonar-scanner -X
       - name: SonarQube Scan
         run: sonar-scanner -X
-           -Dsonar.host.url=http://172.172.187.14:9000
+           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
            
       - uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      # If you wish to fail your job when the Quality Gate is red, uncomment the
-      # following lines. This would typically be used to fail a deployment.
-      # - uses: sonarsource/sonarqube-quality-gate-action@master
-      #   timeout-minutes: 5
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}      
-
-  sonarqube:
-    name: Run sonarscanner
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-    
-      - name: Configure sonar scanner
-        uses: philips-software/sonar-scanner-action@v1.5.1
-        id: sonarconfig
-        with:
-          github_token: ${{ secrets.TOKEN_GITHUB }}
-          token: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-          projectName: test_sonar_python
-          projectKey: SamAws_test
-          url: http://172.172.187.14:9000
-          BaseDir: app/src
-          args: >
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.tests=tests/
-            -Dsonar.verbose=true 
-          isCommunityEdition: true
-          enablePullRequestDecoration: true
-          onlyConfig: true
+          
+      - uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}      
             
   jmeter:
     name: Run jmeter
-    needs: [sonarqube]
+    needs: [test-sonar]
     runs-on: ubuntu-latest
 
     steps:
