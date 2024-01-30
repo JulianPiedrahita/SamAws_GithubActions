@@ -100,10 +100,10 @@ jobs:
         with:
           github_token: ${{ secrets.TOKEN_GITHUB }}
           token: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
           projectName: test_sonar_python
           projectKey: SamAws_test
-          url: http://127.0.0.1:9000
+          url: http://172.172.187.14:9000
           BaseDir: app/src
           args: >
             -Dsonar.python.coverage.reportPaths=coverage.xml
