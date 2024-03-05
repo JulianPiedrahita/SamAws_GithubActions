@@ -11,27 +11,25 @@ permissions:
 jobs:
 
   scan-trivy-repo:
-      name: Run trivy
-      runs-on: ubuntu-latest
+    name: Run trivy
+    runs-on: ubuntu-latest
 
-      steps:
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-        - name: Checkout code
-          uses: actions/checkout@v3
-
-        - name: Run Trivy vulnerability scanner in fs mode
-          uses: aquasecurity/trivy-action@master
-          with:
-            scan-type: 'fs'
-            scan-ref: '.'
-            trivy-config: trivy.yaml    
+      - name: Run Trivy vulnerability scanner in fs mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          trivy-config: trivy.yaml    
 
   depchecktest:
     name: Scan with OWASP Dependency Check 
     needs: [scan-trivy-repo] 
     runs-on: ubuntu-latest 
 
-    # Define permissions for specific actions
     permissions:
       actions: read
       contents: read
@@ -45,12 +43,12 @@ jobs:
         uses: dependency-check/Dependency-Check_Action@main
         id: Depcheck
         with:
-          project: 'SamAws_GithubActions' # Project name for Dependency Check
-          path: '.' # Scan all files in the current directory
-          format: 'SARIF' # Output format for scan results
-          out: '.' # Output directory (default is the current directory)
+          project: 'SamAws_GithubActions' 
+          path: '.' 
+          format: 'SARIF' 
+          out: '.' 
           args: >
-                    --enableRetired # Additional scan arguments for Dependency Check
+                --enableRetired
         continue-on-error: true
 
       - name: Upload results from OWASP Dependency Check to GitHub Code Scanning
