@@ -61,7 +61,7 @@ jobs:
 
   test-pytest:
     name: Run pytests
-    needs: [scan-trivy-repo]
+    needs: [depchecktest]
     runs-on: ubuntu-latest
     strategy:
       matrix:
