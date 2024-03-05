@@ -47,8 +47,6 @@ jobs:
           path: '.' 
           format: 'SARIF' 
           out: '.' 
-          args: >
-                --enableRetired
         continue-on-error: true
 
       - name: Upload results from OWASP Dependency Check to GitHub Code Scanning
